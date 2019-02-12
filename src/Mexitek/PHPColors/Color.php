@@ -200,6 +200,28 @@ class Color {
 
   }
 
+    /**
+     * AmCharts v4 lightness function
+     */
+    public static function getLightnessStep($value, $amount){
+        $base = $amount > 0 ? 255 - $value : $value;
+        return round($base * $amount);
+    }
+    /**
+     * Amcharts v4 Lightness function. -1 Gives completely black. 1 Gives completely white. 0 returns original colour.
+     * @param float $amount. Range from -1 to 1.
+     * @return string Lightened HEX value
+     */
+    public function lightness( $amount = 0){
+        $newRGB = 
+        [
+            "R" => max(0, min(255, $this->_rgb['R'] + self::getLightnessStep($this->_rgb['R'], $amount))),
+            "G" => max(0, min(255, $this->_rgb['G'] + self::getLightnessStep($this->_rgb['G'], $amount))),
+            "B" => max(0, min(255, $this->_rgb['B'] + self::getLightnessStep($this->_rgb['B'], $amount))),
+        ];
+        return self::rgbToHex($newRGB);
+    }
+
 
     /**
      * Given a HEX value, returns a darker color. If no desired amount provided, then the color halfway between
